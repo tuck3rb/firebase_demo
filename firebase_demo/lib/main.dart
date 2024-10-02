@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:firebase_ui_auth/firebase_ui_auth.dart'; // new
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';               // new
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';                 // new
+import 'package:provider/provider.dart';
 
-import 'app_state.dart';                                 // new
+import 'app_state.dart';
 import 'home_page.dart';
 
 void main() {
@@ -20,30 +20,6 @@ void main() {
   ));
 }
 
-// class App extends StatelessWidget {
-//   const App({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Firebase Meetup',
-//       theme: ThemeData(
-//         buttonTheme: Theme.of(context).buttonTheme.copyWith(
-//               highlightColor: Colors.deepPurple,
-//             ),
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         textTheme: GoogleFonts.robotoTextTheme(
-//           Theme.of(context).textTheme,
-//         ),
-//         visualDensity: VisualDensity.adaptivePlatformDensity,
-//         useMaterial3: true,
-//       ),
-//       home: const HomePage(),
-//     );
-//   }
-// }
-
-// Add GoRouter configuration outside the App class
 final _router = GoRouter(
   routes: [
     GoRoute(
@@ -118,9 +94,7 @@ final _router = GoRouter(
     ),
   ],
 );
-// end of GoRouter configuration
 
-// Change MaterialApp to MaterialApp.router and add the routerConfig
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -132,14 +106,14 @@ class App extends StatelessWidget {
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.deepPurple,
             ),
-        primarySwatch: Colors.deepPurple,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         textTheme: GoogleFonts.robotoTextTheme(
           Theme.of(context).textTheme,
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      routerConfig: _router, // new
+      routerConfig: _router,
     );
   }
 }
