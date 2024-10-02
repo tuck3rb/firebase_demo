@@ -1,18 +1,13 @@
 // Copyright 2022 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:gtk_flutter/guest_book.dart';
-import 'guest_book.dart'; 
-
 import 'src/widgets.dart';
-
 import 'package:firebase_auth/firebase_auth.dart' // new
     hide EmailAuthProvider, PhoneAuthProvider;    // new
 
 import 'package:provider/provider.dart';          // new
-
 import 'app_state.dart';                          // new
 import 'src/authentication.dart';                 // new
 
