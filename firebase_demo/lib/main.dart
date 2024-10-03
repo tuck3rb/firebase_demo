@@ -81,6 +81,10 @@ final _router = GoRouter(
           path: 'profile',
           builder: (context, state) {
             return ProfileScreen(
+              appBar: AppBar(
+                title: const Text('User Profile'),
+              ),
+              Slider(value: 0.5, onChanged: (double value) {  },),
               providers: const [],
               actions: [
                 SignedOutAction((context) {
