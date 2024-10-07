@@ -28,9 +28,22 @@ class _AttendeeCountSelectionState extends State<AttendeeCountSelection> {
   }
 
   @override
+  void didUpdateWidget(AttendeeCountSelection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.count != int.tryParse(_controller.text)) {
+      _controller.text = widget.count.toString();
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _updateCount() {
+    final count = int.tryParse(_controller.text) ?? 0;
+    widget.onSelection(count);
   }
 
   @override
@@ -49,17 +62,14 @@ class _AttendeeCountSelectionState extends State<AttendeeCountSelection> {
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
-                final count = int.tryParse(value) ?? 0;
-                widget.onSelection(count);
+                // final count = int.tryParse(value) ?? 0;
+                // widget.onSelection(count);
               },
             ),
           ),
           const SizedBox(width: 8),
-          FilledButton(
-            onPressed: () {
-              final count = int.tryParse(_controller.text) ?? 0;
-              widget.onSelection(count);
-            },
+          ElevatedButton(
+            onPressed: _updateCount,
             child: const Text('Update'),
           ),
         ],

@@ -24,10 +24,29 @@ class ApplicationState extends ChangeNotifier {
   int _userAttendeeCount = 0;
   int get userAttendeeCount => _userAttendeeCount;
   set userAttendeeCount(int count) {
+    _updateAttendeeCount(count);
+  }
+
+  Future<void> _updateAttendeeCount(int count) async {
     final userDoc = FirebaseFirestore.instance
         .collection('attendees')
         .doc(FirebaseAuth.instance.currentUser!.uid);
-    userDoc.set({'attendeeCount': count});
+    await userDoc.set({'attendeeCount': count});
+    _userAttendeeCount = count;
+    await _updateTotalAttendees();
+    notifyListeners();
+  }
+
+  Future<void> _updateTotalAttendees() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('attendees')
+        .get();
+    
+    _attendees = querySnapshot.docs
+        .map((doc) => doc.data()['attendeeCount'] as int? ?? 0)
+        .fold(0, (sum, count) => sum + count);
+    
+    notifyListeners();
   }
 
   bool _loggedIn = false;
@@ -96,7 +115,7 @@ class ApplicationState extends ChangeNotifier {
             .snapshots()
             .listen((snapshot) {
           if (snapshot.data() != null) {
-            _userAttendeeCount = snapshot.data()!['attendee count'] as int? ?? 0;
+            _userAttendeeCount = snapshot.data()!['attendeeCount'] as int? ?? 0;
           } else {
             _userAttendeeCount = 0;
           }

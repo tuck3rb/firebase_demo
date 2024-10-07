@@ -54,7 +54,9 @@ class HomePage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   AttendeeCountSelection(
                     count: appState.userAttendeeCount,
-                    onSelection: (count) => appState.userAttendeeCount = count,
+                    onSelection: (count) { 
+                      appState.userAttendeeCount = count;
+                    },
                   ),
                   const Header('Discussion'),
                   GuestBook(
