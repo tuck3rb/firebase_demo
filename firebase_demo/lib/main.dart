@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'app_state.dart';
 import 'home_page.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -83,13 +84,16 @@ final _router = GoRouter(
             return ProfileScreen(
               appBar: AppBar(
                 title: const Text('User Profile'),
-              ),
-              Slider(value: 0.5, onChanged: (double value) {  },),
+              ), 
+              // Slider(value: 0.5, onChanged: (double value) {  },),
               providers: const [],
               actions: [
                 SignedOutAction((context) {
                   context.pushReplacement('/');
                 }),
+              ],
+              children: [
+                const ColorPickerSlider(),
               ],
             );
           },
@@ -118,6 +122,55 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       routerConfig: _router,
+    );
+  }
+}
+
+class ColorPickerSlider extends StatefulWidget {
+  const ColorPickerSlider({super.key});
+
+  @override
+  _ColorPickerSliderState createState() => _ColorPickerSliderState();
+}
+
+class _ColorPickerSliderState extends State<ColorPickerSlider> {
+  double _hue = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Appearance:  ', 
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 200,
+              height: 20,
+              decoration: BoxDecoration(
+                color: HSVColor.fromAHSV(1.0, _hue, 1.0, 1.0).toColor(),
+                shape: BoxShape.rectangle,
+              ),
+            ),
+          ],
+        ),
+        Slider(
+          value: _hue,
+          min: 0,
+          max: 360,
+          divisions: 360,
+          onChanged: (double value) {
+            setState(() {
+              _hue = value;
+            });
+          },
+        ),
+      ],
     );
   }
 }
