@@ -21,6 +21,15 @@ class ApplicationState extends ChangeNotifier {
     init();
   }
 
+  int _userAttendeeCount = 0;
+  int get userAttendeeCount => _userAttendeeCount;
+  set userAttendeeCount(int count) {
+    final userDoc = FirebaseFirestore.instance
+        .collection('attendees')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    userDoc.set({'attendeeCount': count});
+  }
+
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
@@ -87,14 +96,9 @@ class ApplicationState extends ChangeNotifier {
             .snapshots()
             .listen((snapshot) {
           if (snapshot.data() != null) {
-            if (snapshot.data()!['attending'] as bool) {
-              _attending = Attending.yes;
-            } else {
-              _attending = Attending.no;
-            }
-            _userColor = Color(snapshot.data()!['color'] as int? ?? Colors.black.value);
+            _userAttendeeCount = snapshot.data()!['attendee count'] as int? ?? 0;
           } else {
-            _attending = Attending.unknown;
+            _userAttendeeCount = 0;
           }
           notifyListeners();
         });
@@ -120,7 +124,6 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
-      'color': _userColor.value,
     });
   }
 
@@ -129,7 +132,6 @@ class ApplicationState extends ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    _userColor = color;
     notifyListeners();
 
     await FirebaseFirestore.instance
