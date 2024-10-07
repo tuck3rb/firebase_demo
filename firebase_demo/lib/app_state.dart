@@ -92,6 +92,7 @@ class ApplicationState extends ChangeNotifier {
             } else {
               _attending = Attending.no;
             }
+            _userColor = Color(snapshot.data()!['color'] as int? ?? Colors.black.value);
           } else {
             _attending = Attending.unknown;
           }
@@ -119,6 +120,21 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
+      'color': _userColor.value,
     });
+  }
+
+  Future<void> updateUserColor(Color color) async {
+    if (!_loggedIn) {
+      throw Exception('Must be logged in');
+    }
+
+    _userColor = color;
+    notifyListeners();
+
+    await FirebaseFirestore.instance
+        .collection('attendees')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({'color': color.value}, SetOptions(merge: true));
   }
 }

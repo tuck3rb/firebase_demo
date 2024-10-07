@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'src/widgets.dart';
-
 import 'guest_book_message.dart';
 
 class GuestBook extends StatefulWidget {
@@ -74,7 +72,9 @@ class _GuestBookState extends State<GuestBook> {
         // Modify from here...
         const SizedBox(height: 8),
         for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}'),
+          Paragraph(
+            '${message.name}: ${message.message}',
+        ),
         const SizedBox(height: 8),
       ],
       // ...to here.
